@@ -54,8 +54,8 @@ async def lifespan(app: FastAPI):
     logger.info("Application shutdown complete.")
 
 app = FastAPI(
-    title="Secured Transcription API Service",
-    description="Refactored minimalist multi-tenant speech transcription API.",
+    title="Transcription API",
+    description="speech transcription API using gcolab and whisper",
     version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
@@ -145,21 +145,16 @@ def register_user(request: Request, db: Session = Depends(database.get_db)):
 @app.get("/auth/link", tags=["auth"])
 @limiter.limit(key_rate_limit_str, key_func=get_api_key_str)
 def get_auth_link(
-    request: Request,
-    client_id: str = Query(..., description="Google OAuth Client ID from GCloud Console"),
-    client_secret: str = Query("", description="Google OAuth Client Secret (optional)"),
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(database.get_db)
+        request: Request,
+        current_user: User = Depends(get_current_user),
+        db: Session = Depends(database.get_db)
 ):
     """
     Open google's OAuth to allow gcolab perms
     """
-    client_id = client_id.strip()
-    client_secret = client_secret.strip()
-    
-    if len(client_id) < 10:
-        raise HTTPException(status_code=400, detail="Invalid Google Client ID format.")
-        
+    client_id = config.settings.google_client_id
+    client_secret = config.settings.google_client_secret
+
     current_user.client_id = client_id
     current_user.client_secret = client_secret
     db.add(current_user)
@@ -223,28 +218,30 @@ async def auth_callback(
     redirect_uri = str(request.base_url).rstrip("/") + "/auth/callback"
     token_url = "https://oauth2.googleapis.com/token"
     payload = {
-        "client_id": user.client_id,
-        "client_secret": user.client_secret or "",
+        "client_id": config.settings.google_client_id,
+        "client_secret": config.settings.google_client_secret,
         "code": code,
         "grant_type": "authorization_code",
         "redirect_uri": redirect_uri
     }
-    
+
     try:
         async with httpx.AsyncClient(timeout=30.0) as client:
             r = await client.post(token_url, data=payload)
             if r.status_code != 200:
                 logger.error(f"Google Token Exchange returned {r.status_code}: {r.text}")
-                return HTMLResponse(f"<h3>Authentication failed: Google token exchange returned status {r.status_code}</h3>", status_code=400)
+                return HTMLResponse(
+                    f"<h3>Authentication failed: Google token exchange returned status {r.status_code}</h3>",
+                    status_code=400)
             tokens = r.json()
-            
+
         # Save tokens securely using Colab accounts store
         from sdk.colab_sdk import ColabAccountStore
         store = ColabAccountStore(config.settings.colab_accounts_file)
         store.add_profile(
             name=user.account_id,
-            client_id=user.client_id,
-            client_secret=user.client_secret or "",
+            client_id=config.settings.google_client_id,
+            client_secret=config.settings.google_client_secret,
             refresh_token=tokens.get("refresh_token", ""),
             access_token=tokens.get("access_token", ""),
             email=""

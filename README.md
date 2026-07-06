@@ -122,3 +122,5 @@ Under the `SDK` folders we have `whisper_sdk.py`, `colab_sdk.py` and `whisper_se
 - `whisper_sdk.py` and `whisper_server.py` go hand in hand. 
 Whisper server is code that will be running on Google Colab and Whisper SDK is a small script that helps us to easily interact with the API.
 - `colab_sdk.py` as the name suggests, it interacts with Google Colab's reverse engineered APIs 
+
+# video demo

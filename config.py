@@ -17,6 +17,10 @@ class Settings(BaseSettings):
     rate_limit_window: int = 60
     max_file_size_mb: int = 100
 
+
+    google_client_id: str = ""
+    google_client_secret: str = ""
+
     model_config = SettingsConfigDict(
         env_prefix="TRANSCRIPTION_",
         env_file=str(BASE_DIR / ".env"),
