@@ -12,6 +12,16 @@ The flow is simple:
 5. Now comes the most important thing. You simply queue in an audio file and wait for the webhook.
 6. Additionally you can query and get the status and current transcription.
 
+This project is a FastAPI-based Speech Transcription API designed to dynamically leverage Google Colab’s T4 GPU runtimes for high-performance audio transcription using Whisper.
+
+# Key Characteristics & Workflow
+1. Dynamic Runtime Orchestration: The API allocates and manages Google Colab T4 GPU instances dynamically per user (linked via gColab).
+2. Cloudflare Tunneling: Once a Colab instance is created, the project deploys a lightweight faster-whisper server on the instance and exposes it to the API server via a Cloudflare tunnel
+3. Queue & Job Management: Transcription jobs are submitted, queued in a FIFO order, and stored in an SQLite database using SQLModel.
+4. Post-Transcription Summarization: It leverages Gemini models (via google-genai) to generate automated summaries and execute custom prompts/tasks on the transcribed text.
+5. Additional Features: The project includes rate limiting (SlowAPI), customizable webhook alerts for job completion, and a Python client SDK.
+
+
 # Meeting Submission Requirements
 
 1. My API is publicly accessible on the internet with a URL ✅
