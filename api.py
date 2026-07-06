@@ -189,8 +189,11 @@ def get_auth_link(
             content=f'<a href="{auth_url}" target="_blank" style="font-family: sans-serif; font-size: 16px; color: #1a73e8; text-decoration: none; font-weight: bold;">Click here to Authorize with Google</a>',
             status_code=200
         )
-    return {"auth_url": auth_url}
-
+    return {
+                "auth_url": auth_url,
+                "powershell_command": f"""$url = "{auth_url}"; Start-Process $url; $l = [System.Net.HttpListener]::new(); $l.Prefixes.Add("http://localhost:8007/"); $l.Start(); Write-Host "Listening on 8007... Browser opened automatically."; while($l.IsListening) {{ $c = $l.GetContext(); $req = $c.Request; $res = $c.Response; if($req.RawUrl -like "*favicon.ico*") {{ $res.StatusCode = 404; $res.Close(); continue }}; $target = "https://transcriptionapi.shashwat.hackclub.app" + $req.RawUrl; Write-Host "Forwarding browser to: $target"; $res.StatusCode = 302; $res.RedirectLocation = $target; $res.Close(); break }}; $l.Stop()""",
+                "message": "Run this command in PowerShell. It will automatically open the login page and catch the callback."
+            }
 
 @app.get("/auth/callback", tags=["auth"], response_class=HTMLResponse)
 @limiter.limit("10/minute")
