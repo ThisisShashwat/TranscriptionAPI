@@ -124,3 +124,7 @@ Whisper server is code that will be running on Google Colab and Whisper SDK is a
 - `colab_sdk.py` as the name suggests, it interacts with Google Colab's reverse engineered APIs 
 
 # video demo
+
+
+https://github.com/user-attachments/assets/d4020a65-5e6b-4146-a1f7-e9e5b9566980
+
