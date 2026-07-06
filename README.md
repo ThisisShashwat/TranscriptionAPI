@@ -51,13 +51,28 @@ The project has multiple endpoints:
 *   **`POST /auth/register`**
     *   **Description:** Registers a new user and generates the initial API key required for authentication.
 *   **`GET /auth/link`**
-    *   **Description:** Generates a Google OAuth authorization URL. Users visit this link in a browser to authenticate with their Google account and grant access to the free Google Colab server.
+    *   **Description:** Generates a Google OAuth authorization URL. Users have to run powershell script (read below) to authenticate with their Google account and grant access to the free Google Colab server.
 *   **`GET /auth/colab`** *(Internal)*
     *   **Description:** The callback endpoint where Google OAuth redirects after successful user authentication, supplying the backend server with the necessary access tokens.
 *   **`GET /auth/status`**
     *   **Description:** Returns the operational status of the service, verifying if the API token is valid and checking the availability of free credits.
 
 ---
+
+**Read this:**
+Ideally we would just be okay with the URL if you are working on localhost but we are not. This is Google's reverse engineered unofficial API, which is logged to localhost, and there is nothing we can do about it. It wouldn't work with our server. The only way to make it work is that we redirect it to localhost and the partial script is basically a web server that catches it and blindly redirects it to our server. It's a temporary proxy while we are doing the authentication but the proxy kills itself once it's done
+
+**windows:** run this script, then manually navigate to the url, it will automatically redirect you.
+```powershell
+$l = [System.Net.HttpListener]::new(); $l.Prefixes.Add("http://localhost:8007/"); $l.Start(); Write-Host "Listening on 8007..."; while($l.IsListening) { $c = $l.GetContext(); $req = $c.Request; $res = $c.Response; if($req.RawUrl -like "*favicon.ico*") { $res.StatusCode = 404; $res.Close(); continue }; $target = "https://transcriptionapi.shashwat.hackclub.app" + $req.RawUrl; Write-Host "Forwarding browser to: $target"; $res.StatusCode = 302; $res.RedirectLocation = $target; $res.Close(); break }; $l.Stop()
+```
+
+**linux/mac**:not tested
+```bash
+python3 -c 'import http.server, sys, threading; server = http.server.HTTPServer(("localhost", 8007), type("H", (http.server.BaseHTTPRequestHandler,), {"do_GET": lambda s: s.send_response(404) or s.end_headers() if "favicon.ico" in s.path else (print(f"Forwarding browser to: https://transcriptionapi.shashwat.hackclub.app{s.path}"), sys.stdout.flush(), s.send_response(302), s.send_header("Location", f"https://transcriptionapi.shashwat.hackclub.app{s.path}"), s.end_headers(), threading.Thread(target=server.shutdown).start())})); print("Listening on 8007..."); sys.stdout.flush(); server.serve_forever()'
+```
+
+
 
 ## 2. Configuration Section (`/config`)
 
