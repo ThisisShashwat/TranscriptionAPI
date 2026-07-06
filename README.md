@@ -128,3 +128,17 @@ Whisper server is code that will be running on Google Colab and Whisper SDK is a
 
 https://github.com/user-attachments/assets/d4020a65-5e6b-4146-a1f7-e9e5b9566980
 
+# screenshots
+<img width="580" height="619" alt="image" src="https://github.com/user-attachments/assets/a1d38e3a-849c-472c-9249-4b39cbee9305" />
+<img width="428" height="199" alt="image" src="https://github.com/user-attachments/assets/e86d06ae-c449-414c-93a9-6b80d8ecb488" />
+<img width="574" height="511" alt="image" src="https://github.com/user-attachments/assets/d7b1f521-b533-46d9-8f40-fb45cb43b803" />
+<img width="574" height="516" alt="image" src="https://github.com/user-attachments/assets/0e297eef-44f0-4388-b204-9b78c58d3586" />
+<img width="571" height="520" alt="image" src="https://github.com/user-attachments/assets/45e233e8-6a56-4052-954f-ab3a4eb6ab82" />
+<img width="565" height="496" alt="image" src="https://github.com/user-attachments/assets/67e24017-af96-48ce-a6ed-fd3bcf49cd3b" />
+<img width="577" height="411" alt="image" src="https://github.com/user-attachments/assets/88eeebb7-f20b-4c80-833e-7fae91618adc" />
+<img width="581" height="356" alt="image" src="https://github.com/user-attachments/assets/d378e263-1d7a-4a4c-b2d1-4fa4b5d4b27d" />
+<img width="560" height="421" alt="image" src="https://github.com/user-attachments/assets/d3dea203-5930-407c-a33e-77218390dcbd" />
+<img width="587" height="336" alt="image" src="https://github.com/user-attachments/assets/117eef35-9a9d-442e-b26a-b213b7b9a3f0" />
+<img width="581" height="449" alt="image" src="https://github.com/user-attachments/assets/cc4cee95-349e-4be2-a412-1e96e68937fb" />
+
+
