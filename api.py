@@ -215,7 +215,7 @@ async def auth_callback(
     if not user:
         return HTMLResponse("<h3>Authentication failed: Invalid state metadata.</h3>", status_code=400)
         
-    redirect_uri = str(request.base_url).rstrip("/") + "/auth/callback"
+    redirect_uri = str("http://localhost:8007").rstrip("/") + "/auth/callback"
     token_url = "https://oauth2.googleapis.com/token"
     payload = {
         "client_id": config.settings.google_client_id,
