@@ -161,7 +161,7 @@ def get_auth_link(
     db.commit()
     
     # Construct redirect URL pointing back to this API callback route
-    redirect_uri = str(request.base_url).rstrip("/") + "/auth/callback"
+    redirect_uri = str("http://localhost:8007").rstrip("/") + "/auth/callback"
     scopes = [
         "profile",
         "email",

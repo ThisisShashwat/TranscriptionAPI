@@ -1,6 +1,6 @@
 # TranscriptionAPI
 
-https://transcriptionapi.shashwat.hackclub.app/
+https://transcriptionapi.shashwat.hackclub.app/docs
 
 In short this project uses your Google Colab/Kaggle free gpu's And runs the heavy speech-to-text models on it and uses Google's free AI studio key to summarise it too. (optional)
 
@@ -125,7 +125,7 @@ Under the `SDK` folders we have `whisper_sdk.py`, `colab_sdk.py` and `whisper_se
 Whisper server is code that will be running on Google Colab and Whisper SDK is a small script that helps us to easily interact with the API.
 - `colab_sdk.py` as the name suggests, it interacts with Google Colab's reverse engineered APIs 
 
-https://transcriptionapi.shashwat.hackclub.app/
+https://transcriptionapi.shashwat.hackclub.app/docs
 
 # video demo
 
